@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#102a43">
+<meta name="description" content="A free independent tool to help Tasmanians understand and respond to the Firearms Amendment (Miscellaneous) Bill 2026 consultation.">
+<title>Tas Firearms Submission Builder</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="hero">
+  <div class="shell">
+    <div class="eyebrow">Independent consultation helper</div>
+    <h1>Tas Firearms Submission Builder</h1>
+    <p>Understand each proposed change, record your own view, and generate an individual submission ready to email.</p>
+    <div class="deadline">Submissions close <strong>5 pm Friday 7 August 2026</strong></div>
+  </div>
+</header>
+<main class="shell">
+  <div class="progress-wrap hidden" id="progressWrap">
+    <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+    <div class="progress-meta"><span id="progressLabel">0 of 21 answered</span><span id="stepLabel"></span></div>
+  </div>
+
+  <section class="card" id="welcome">
+    <h2>Have your say without starting from a blank page</h2>
+    <p>This tool summarises all 21 proposals in plain English. It does not tell you what to think: support, oppose, remain unsure, or choose no comment.</p>
+    <div class="grid3">
+      <div class="feature"><strong>Private by design</strong><span>Your answers remain in your browser and are not collected.</span></div>
+      <div class="feature"><strong>Save automatically</strong><span>Return on the same device and continue where you left off.</span></div>
+      <div class="feature"><strong>Your own submission</strong><span>Edit the generated text before emailing it.</span></div>
+    </div>
+    <div class="notice"><strong>For the strongest submission, respond to every amendment.</strong> “No comment” counts as an answer.</div>
+    <div class="sourcebox">
+      <strong>Official material</strong>
+      <a href="https://www.police.tas.gov.au/consultation/consultation-on-the-firearms-amendment-miscellaneous-bill-2026/" target="_blank" rel="noopener">Tasmania Police consultation page</a>
+      <a href="https://www.legislation.tas.gov.au/view/html/inforce/current/act-1996-023" target="_blank" rel="noopener">Current Firearms Act 1996</a>
+    </div>
+    <div class="actions"><button class="btn ghost" id="clearBtn">Clear saved answers</button><button class="btn primary" id="startBtn">Start submission</button></div>
+  </section>
+
+  <section class="card hidden" id="details">
+    <h2>Your details</h2>
+    <p class="muted">Optional. Details are inserted only into your generated submission.</p>
+    <label class="field">Name<input id="name" autocomplete="name"></label>
+    <label class="field">Town or municipality<input id="town"></label>
+    <label class="field">Email address<input id="email" type="email" autocomplete="email"></label>
+    <label class="field">Background or interest<textarea id="background" placeholder="For example: licensed firearm owner, primary producer, sporting shooter, dealer, club member or community member."></textarea></label>
+    <div class="actions"><button class="btn secondary" data-back>Back</button><button class="btn primary" id="beginAmendments">Begin amendments</button></div>
+  </section>
+
+  <section class="card hidden" id="amendmentCard">
+    <div class="amendment-head">
+      <div><div class="muted" id="amendmentNumber"></div><h2 id="amendmentTitle"></h2></div>
+      <span class="impact" id="impact"></span>
+    </div>
+    <div class="proposal"><strong>Official proposal summary</strong><p id="proposal"></p></div>
+    <details open><summary>Plain-English explanation</summary><p id="plain"></p></details>
+    <div class="comparison">
+      <div><strong>Current position</strong><p id="current"></p></div>
+      <div><strong>What would change</strong><p id="change"></p></div>
+    </div>
+    <p class="disclaimer">These short explanations are general information, not legal advice. Check the consultation Bill and official material before relying on them.</p>
+
+    <h3>Your position</h3>
+    <div class="options" id="positionOptions"></div>
+    <div id="reasonArea" class="hidden">
+      <h3 id="reasonHeading">Optional suggested reasons</h3>
+      <p class="muted">Select only reasons that genuinely reflect your own view. Edit or add your own wording below.</p>
+      <div class="reasons" id="reasonOptions"></div>
+      <label class="field">Other reason<input id="otherReason"></label>
+    </div>
+    <label class="field">Other / extra comments<textarea id="extraComments"></textarea></label>
+    <div class="actions"><button class="btn secondary" id="previousAmendment">Back</button><button class="btn primary" id="nextAmendment">Next</button></div>
+  </section>
+
+  <section class="card hidden" id="finalComments">
+    <h2>Further suggestions</h2>
+    <label class="field">Alternative changes you believe should be considered<textarea id="suggestions" placeholder="For example: storage improvements, theft prevention, enforcement, transition periods, exemptions or clearer evidence."></textarea></label>
+    <label class="field">Closing comments<textarea id="closing"></textarea></label>
+    <div class="actions"><button class="btn secondary" id="backToLast">Back</button><button class="btn primary" id="reviewBtn">Review submission</button></div>
+  </section>
+
+  <section class="card hidden" id="review">
+    <h2>Review</h2>
+    <div id="reviewSummary"></div>
+    <div class="positionTotals" id="positionTotals"></div>
+    <div class="actions"><button class="btn secondary" id="editBtn">Edit answers</button><button class="btn primary" id="generateBtn">Generate submission</button></div>
+  </section>
+
+  <section class="card hidden" id="result">
+    <h2>Your generated submission</h2>
+    <p class="muted">Read through it, personalise anything you wish, then copy or open your email app.</p>
+    <textarea class="output" id="output"></textarea>
+    <div class="actions">
+      <button class="btn secondary" id="copyBtn">Copy submission</button>
+      <button class="btn secondary" id="emailBtn">Open addressed email</button>
+      <button class="btn primary" onclick="window.print()">Print / save PDF</button>
+    </div>
+    <p class="muted" id="copyStatus"></p>
+  </section>
+
+  <div class="modal-backdrop hidden" id="modal">
+    <div class="modal" role="dialog" aria-modal="true">
+      <h2>Complete your submission</h2>
+      <p>Please answer every amendment. “No comment” counts as an answer.</p>
+      <div class="missing-list" id="missingList"></div>
+      <div class="actions"><button class="btn secondary" id="modalClose">Close</button><button class="btn primary" id="modalContinue">First unanswered</button></div>
+    </div>
+  </div>
+
+  <footer>
+    <p><strong>Independent and unaffiliated.</strong> This tool does not send or collect submissions. Public submissions may be published by the Tasmanian Government; review the official consultation page for its policy.</p>
+  </footer>
+</main>
+<script src="data.js"></script>
+<script src="app.js" defer></script>
+</body>
+</html>
